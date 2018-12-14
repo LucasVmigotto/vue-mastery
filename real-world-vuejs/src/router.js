@@ -7,6 +7,7 @@ import EventCreate from './views/EventCreate.vue'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -15,9 +16,10 @@ export default new Router({
       alias: ['/list']
     },
     {
-      path: '/event',
+      path: '/event/:id',
       name: 'event-show',
-      component: EventShow
+      component: EventShow,
+      props: true
     },
     {
       path: '/event/create',
