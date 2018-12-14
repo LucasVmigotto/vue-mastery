@@ -1,4 +1,4 @@
-FROM node:40-alpine
+FROM node:10-alpine
 
 RUN apk add --no-cache curl bash shadow
 

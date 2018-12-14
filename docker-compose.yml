@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  api:
+    build:
+      context: ./docker
+      args: 
+      - http_proxy
+      - https_proxy
+      - no_proxy
+    command: npm run serve
+    working_dir: /app
+    environment:
+    - http_proxy
+    - https_proxy
+    - no_proxy
+    - LOCAL_USER_ID
+    ports:
+    - 3000:3000
+    volumes:
+    - .:/app
