@@ -34,10 +34,12 @@ export default {
     this.fetchEvent(this.id)
   },
   computed: {
-    ...mapState(['event'])
+    ...mapState({
+      event: state => state.event.event
+    })
   },
   methods: {
-    ...mapActions('event', ['fetchEvents'])
+    ...mapActions('event', ['fetchEvent'])
   }
 }
 </script>

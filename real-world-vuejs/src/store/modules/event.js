@@ -24,23 +24,45 @@ export const mutations = {
 }
 
 export const actions = {
-  createEvent({ commit }, event) {
-    return EventService.postEvent(event).then(() => {
-      commit('ADD_EVENT', event.data)
-    })
+  createEvent({ commit, dispatch }, event) {
+    return EventService.postEvent(event)
+      .then(() => {
+        commit('ADD_EVENT', event)
+        const notification = {
+          type: 'success',
+          message: 'Success creating the event!'
+        }
+        dispatch('notification/add', notification, {
+          root: true
+        })
+      })
+      .catch(err => {
+        const notification = {
+          type: 'error',
+          message: `There was an error creating the event. ${err.message}`
+        }
+        dispatch('notification/add', notification, {
+          root: true
+        })
+      })
   },
-  fetchEvents({ commit }, { perPage, page }) {
+  fetchEvents({ commit, dispatch }, { perPage, page }) {
     EventService.getEvents(perPage, page)
       .then(res => {
-        console.log(`Total events is ${res.headers['x-total-count']}`)
         commit('SET_TOTAL_EVENTS', res.headers['x-total-count'])
         commit('SET_EVENTS', res.data)
       })
       .catch(err => {
-        console.log(`There was an error fetching the events. ${err}`)
+        const notification = {
+          type: 'error',
+          message: `There was an error fetching the events. ${err.message}`
+        }
+        dispatch('notification/add', notification, {
+          root: true
+        })
       })
   },
-  fetchEvent({ commit, getters }, id) {
+  fetchEvent({ commit, getters, dispatch }, id) {
     const event = getters.getEventById(id)
     if (event) {
       commit('SET_EVENT', event)
@@ -50,7 +72,15 @@ export const actions = {
           commit('SET_EVENT', res.data)
         })
         .catch(err => {
-          console.log(`There was an error searching for the event. ${err}`)
+          const notification = {
+            type: 'error',
+            message: `There was an error searching for the event. ${
+              err.message
+            }`
+          }
+          dispatch('notification/add', notification, {
+            root: true
+          })
         })
     }
   }
