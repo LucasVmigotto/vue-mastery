@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "concurrently \"npm run serve\" \"npm run db\"",
+    "start:delay": "concurrently \"npm run serve\" \"npm run db:delay\"",
     "db": "json-server --watch db.json",
+    "db:delay": "json-server -d 1500 db.json",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -15,6 +17,7 @@
     "json-server": "^0.14.0",
     "lodash": "^4.17.11",
     "node-sass": "^4.11.0",
+    "nprogress": "^0.2.0",
     "sass-loader": "^7.1.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
