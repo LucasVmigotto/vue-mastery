@@ -6,7 +6,7 @@
     "start": "concurrently \"npm run serve\" \"npm run db\"",
     "start:delay": "concurrently \"npm run serve\" \"npm run db:delay\"",
     "db": "json-server --watch db.json",
-    "db:delay": "json-server -d 1500  db.json",
+    "db:delay": "json-server -d 15000  db.json",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"

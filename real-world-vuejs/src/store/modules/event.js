@@ -74,8 +74,7 @@ export const actions = {
   },
   fetchEvent({
     commit,
-    getters,
-    dispatch
+    getters
   }, id) {
     const event = getters.getEventById(id)
     if (event) {
@@ -86,17 +85,6 @@ export const actions = {
         .then(res => {
           commit('SET_EVENT', res.data)
           return res.data
-        })
-        .catch(err => {
-          const notification = {
-            type: 'error',
-            message: `There was an error searching for the event. ${
-              err.message
-            }`
-          }
-          dispatch('notification/add', notification, {
-            root: true
-          })
         })
     }
   }
