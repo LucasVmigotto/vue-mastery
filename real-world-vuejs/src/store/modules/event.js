@@ -5,7 +5,8 @@ export const namespaced = true
 export const state = {
   events: [],
   eventsTotal: 0,
-  event: {}
+  event: {},
+  perPage: 3
 }
 
 export const mutations = {
@@ -24,7 +25,10 @@ export const mutations = {
 }
 
 export const actions = {
-  createEvent({ commit, dispatch }, event) {
+  createEvent({
+    commit,
+    dispatch
+  }, event) {
     return EventService.postEvent(event)
       .then(() => {
         commit('ADD_EVENT', event)
@@ -46,8 +50,14 @@ export const actions = {
         })
       })
   },
-  fetchEvents({ commit, dispatch }, { perPage, page }) {
-    EventService.getEvents(perPage, page)
+  fetchEvents({
+    commit,
+    dispatch,
+    state
+  }, {
+    page
+  }) {
+    return EventService.getEvents(state.perPage, page)
       .then(res => {
         commit('SET_TOTAL_EVENTS', res.headers['x-total-count'])
         commit('SET_EVENTS', res.data)
@@ -62,7 +72,11 @@ export const actions = {
         })
       })
   },
-  fetchEvent({ commit, getters, dispatch }, id) {
+  fetchEvent({
+    commit,
+    getters,
+    dispatch
+  }, id) {
     const event = getters.getEventById(id)
     if (event) {
       commit('SET_EVENT', event)

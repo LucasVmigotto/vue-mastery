@@ -285,6 +285,24 @@
       "date": "",
       "time": "",
       "attendees": []
+    },
+    {
+      "id": 3783274,
+      "user": {
+        "id": "abc123",
+        "name": "John Doe"
+      },
+      "category": "food",
+      "organizer": {
+        "id": "abc123",
+        "name": "John Doe"
+      },
+      "title": "Picnic",
+      "description": "",
+      "location": "",
+      "date": "",
+      "time": "",
+      "attendees": []
     }
   ]
 }

@@ -14,7 +14,8 @@ const router = new Router({
       path: '/',
       name: 'event-list',
       component: EventList,
-      alias: ['/list']
+      alias: ['/list'],
+      props: true
     },
     {
       path: '/event/:id',
