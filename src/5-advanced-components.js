@@ -43,6 +43,7 @@ dep.depend()
 target()
 */
 
+/*
 let data = { price: 5, quantity: 2 }
 let target = null
 
@@ -84,3 +85,74 @@ function watcher (myFunc) {
 }
 
 watcher(() => { data.total = data.price * data.quantity })
+
+console.log(`Total = ${data.total}`)
+data.price = 20
+console.log(`Total = ${data.total}`)
+data.quantity = 10
+console.log(`Total = ${data.total}`)
+*/
+
+let data = { price: 5, quantity: 2 }
+let target = null
+
+class Dep {
+  constructor () {
+    this.subscribers = []
+  }
+  depend () {
+    if (target && !this.subscribers.includes(target)) {
+      this.subscribers.push(target)
+    }
+  }
+  notify () {
+    this.subscribers.forEach(sub => sub())
+  }
+}
+
+let deps = new Map()
+
+Object.keys(data).forEach(key => {
+  deps.set(key, new Dep())
+})
+
+let dataWithoutProxy = data
+
+data = new Proxy(dataWithoutProxy, {
+  get (obj, key) {
+    deps.get(key).depend()
+    return obj[key]
+  },
+  set (obj, key, newValue) {
+    obj[key] = newValue
+    deps.get(key).notify()
+    return true
+  }
+})
+
+let total = 0
+
+function watcher (myFunc) {
+  target = myFunc
+  target()
+  target = null
+}
+
+watcher(() => { total = data.price * data.quantity })
+
+console.log(`Total = ${total}`)
+data.price = 20
+console.log(`Total = ${total}`)
+data.quantity = 10
+console.log(`Total = ${total}`)
+
+deps.set('discount', new Dep())
+data['discount'] = 5
+
+let salePrice = 5
+
+watcher(() => { salePrice = data.price - data.discount })
+
+console.log(`Sale price = ${salePrice}`)
+data.discount = 7.5
+console.log(`Sale price = ${salePrice}`)
