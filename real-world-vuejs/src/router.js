@@ -5,6 +5,7 @@ import EventShow from './views/EventShow.vue'
 import EventCreate from './views/EventCreate.vue'
 import NotFound from '@/components/NotFound.vue'
 import NetworkIssue from '@/views/NetworkIssue.vue'
+import Example from '@/views/Example.vue'
 import NProgress from 'nprogress'
 import store from '@/store/store'
 
@@ -12,7 +13,8 @@ Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
-  routes: [{
+  routes: [
+    {
       path: '/',
       name: 'event-list',
       component: EventList,
@@ -24,14 +26,14 @@ const router = new Router({
       name: 'event-show',
       component: EventShow,
       props: true,
-      beforeEnter(routeTo, routeFrom, next) {
+      beforeEnter (routeTo, routeFrom, next) {
         store.dispatch('event/fetchEvent', routeTo.params.id)
           .then(event => {
             routeTo.params.event = event
             next()
           })
           .catch(err => {
-            if (err.response && err.response.status == 404) {
+            if (err.response && err.response.status === 404) {
               next({
                 name: '404',
                 params: {
@@ -70,6 +72,10 @@ const router = new Router({
       path: '/network-issue',
       name: 'network-issue',
       component: NetworkIssue
+    },
+    {
+      path: '/example',
+      component: Example
     }
   ]
 })
